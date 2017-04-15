@@ -130,10 +130,15 @@ main( long int argc, char** argv )
 		filename[k] = 't';
 		k++;
 		filename[k] = '\0';
+		if(access(filename,F_OK)==-1)
+		{
+			printf("You tried to revoke %s user who has not been created yet, or his file cannot be accessed.\n",argv[i]);
+			continue;
+		}
 		FILE *ptr = fopen(filename,"w");
 		if(ptr==NULL)
 		{
-			printf("\nThe file could not be opened for writing, or you tried to revoke a user who has not been created yet.");
+			printf("\nThe file could not be opened for writing.\n");
 			exit(0);
 		}
 		

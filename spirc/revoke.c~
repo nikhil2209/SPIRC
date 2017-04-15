@@ -90,13 +90,12 @@ main( long int argc, char** argv )
 
 	i = parse_args(argc, argv);
 
-	if((argc-i) > REVOKE_T)
+	/*if((argc-i) > REVOKE_T)
 	{
 		die("Trying to revoke %d users. Can revoke at most %d users.\n", (argc-i), REVOKE_T);
-	}
+	}*/
 
 	long int n = argc - i;
-	int myvar = i;
 	/*	
 	rl = malloc((n + 1) * sizeof(char *));
 	for(j=0; j<n; j++, i++)
@@ -113,13 +112,13 @@ main( long int argc, char** argv )
 	
 	element_t temp;
 	element_init_Zr(temp,pub->p);
-	for(j=0;j<n;j++,myvar++)
+	for(j=0;j<n;j++,i++)
 	{
-		char *filename = (char*)malloc(sizeof(argv[myvar])+1);
+		char *filename = (char*)malloc(sizeof(argv[i])+1);
 		int k=0;
-		while(argv[myvar][k]!='.')
+		while(argv[i][k]!='.')
 		{
-			filename[k] = argv[myvar][k];
+			filename[k] = argv[i][k];
 			k++;
 		}
 		filename[k] = '.';
@@ -131,10 +130,15 @@ main( long int argc, char** argv )
 		filename[k] = 't';
 		k++;
 		filename[k] = '\0';
+		if(access(filename,F_OK)==-1)
+		{
+			printf("You tried to revoke %s user who has not been created yet, or his file cannot be accessed.\n",filename);
+			continue;
+		}
 		FILE *ptr = fopen(filename,"w");
 		if(ptr==NULL)
 		{
-			printf("\nThe file could not be opened for writing, or you tried to revoke a user who has not been created yet.");
+			printf("\nThe file could not be opened for writing.\n");
 			exit(0);
 		}
 		

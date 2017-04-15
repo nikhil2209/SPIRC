@@ -341,7 +341,7 @@ configure:3916: $? = 0
 configure:3916: result: yes
 configure:3922: checking for _doprnt
 configure:3922: gcc -o conftest -O3 -Wall  -O3 -Wall conftest.c  >&5
-/tmp/ccLExBoT.o: In function `main':
+/tmp/ccO8qWOz.o: In function `main':
 conftest.c:(.text.startup+0x7): undefined reference to `_doprnt'
 collect2: error: ld returned 1 exit status
 configure:3922: $? = 1
