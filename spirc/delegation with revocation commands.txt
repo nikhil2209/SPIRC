@@ -1,0 +1,14 @@
+rm a.txt
+echo "Hello" > a.txt
+spirc-setup -p pk-a -m mk-a
+spirc-keygen -o sk-ab pk-a mk-a friend colleague fof
+spirc-revoke -o rvk-a pk-a mk-a sk-ab.id
+spirc-enc pk-a a.txt '(friend and colleague) or fof'
+spirc-convert -k -l lk-b pk-a a.txt.cpabe rvk-a sk-ab.id
+spirc-setup -p pk-b -m mk-b
+spirc-keygen -o sk-bc pk-b mk-b acquaintance neighbor
+spirc-revoke -o rvk-b pk-b mk-b
+spirc-delegate -o skdel-abc pk-b mk-b sk-ab sk-bc.id fof
+spirc-convert -k -o a2.txt.cpabe.proxy -l lk-c pk-b a.txt.cpabe rvk-b sk-bc.id
+spirc-dec_delegated -k -o a.txt pk-a pk-b skdel-abc lk-b lk-c a.txt.cpabe.proxy a2.txt.cpabe.proxy
+cat a.txt

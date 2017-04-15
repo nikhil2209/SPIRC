@@ -1,0 +1,14 @@
+rm a.txt
+echo "Hello" > a.txt
+easier-setup -p pk-a -m mk-a
+easier-keygen -o sk-ab pk-a mk-a friend colleague fof
+easier-revoke -o rvk-a pk-a mk-a
+easier-enc pk-a a.txt '(friend and colleague) or fof'
+easier-convert -k -l lk-b pk-a a.txt.cpabe rvk-a sk-ab.id
+easier-setup -p pk-b -m mk-b
+easier-keygen -o sk-bc pk-b mk-b acquaintance neighbor
+easier-revoke -o rvk-b pk-b mk-b
+easier-delegate -o skdel-abc pk-b mk-b sk-ab sk-bc.id fof
+easier-convert -k -o a2.txt.cpabe.proxy -l lk-c pk-b a.txt.cpabe rvk-b sk-bc.id
+easier-dec_delegated -k -o a.txt pk-a pk-b skdel-abc lk-b lk-c a.txt.cpabe.proxy a2.txt.cpabe.proxy
+cat a.txt
